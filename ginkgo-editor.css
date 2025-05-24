@@ -1,3 +1,4 @@
+/* Einzelner verzweigter Block */
 .wp-block-ginkgo-branch-block {
     display: block;
     margin: 1em 0;
@@ -6,7 +7,7 @@
     background-color: #f9f9f9;
 }
 
-/* Branch-Pair Layout */
+/* Container für zwei Spalten */
 .ginkgo-pair-block {
     display: flex;
     flex-direction: row;
@@ -14,13 +15,16 @@
     margin: 2rem 0;
 }
 
-.ginkgo-pair-block > .ginkgo-main,
-.ginkgo-pair-block > .ginkgo-branch {
+/* Hauptspalte */
+.ginkgo-pair-block > .ginkgo-main {
     flex: 1;
     min-width: 0;
 }
 
-.ginkgo-branch {
+/* Verzweigung */
+.ginkgo-pair-block > .ginkgo-branch {
+    flex: 1;
+    min-width: 0;
     border-left: 3px solid #ccc;
     padding-left: 1rem;
     background: #f8f8f8;
