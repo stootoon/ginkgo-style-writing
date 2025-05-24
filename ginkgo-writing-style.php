@@ -2,7 +2,7 @@
 /*
 Plugin Name: Ginkgo Style Writing
 Description: Ermöglicht verzweigtes Schreiben mit parallelen Spalten, inspiriert von Ginkgo.
-Version: 0.1
+Version: 0.2
 Author: Deine Name
 */
 
@@ -36,4 +36,9 @@ function ginkgo_enqueue_editor_assets() {
     );
 }
 add_action('enqueue_block_editor_assets', 'ginkgo_enqueue_editor_assets');
-add_action('enqueue_block_assets', 'ginkgo_enqueue_editor_assets');
+
+// Extend block attributes for optional branch metadata
+function ginkgo_register_block_variants() {
+    wp_add_inline_script('ginkgo-editor', 'window.ginkgoBranchSupport = true;', 'before');
+}
+add_action('init', 'ginkgo_register_block_variants');
