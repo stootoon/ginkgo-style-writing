@@ -1,27 +1,12 @@
 <?php
 /*
 Plugin Name: Ginkgo Style Writing
-Description: Ermöglicht verzweigtes Schreiben mit parallelen Spalten, inspiriert von Ginkgo.
-Version: 0.4
+Description: Ermöglicht verzweigtes Schreiben mit parallelen Spalten, rekursiv wie bei Ginkgo.
+Version: 0.5
 Author: Deine Name
 */
 
-// Register custom post type for branches
-function ginkgo_register_branch_post_type() {
-    register_post_type('ginkgo_branch', array(
-        'labels' => array(
-            'name' => __('Branches'),
-            'singular_name' => __('Branch')
-        ),
-        'public' => false,
-        'show_ui' => true,
-        'supports' => array('title', 'editor', 'revisions'),
-        'capability_type' => 'post',
-    ));
-}
-add_action('init', 'ginkgo_register_branch_post_type');
-
-// Enqueue block editor assets
+// Enqueue assets
 function ginkgo_enqueue_editor_assets() {
     wp_enqueue_script(
         'ginkgo-editor',
@@ -31,8 +16,8 @@ function ginkgo_enqueue_editor_assets() {
         true
     );
     wp_enqueue_script(
-        'ginkgo-pair-block',
-        plugin_dir_url(__FILE__) . 'ginkgo-pair-block.js',
+        'ginkgo-recursive-pair',
+        plugin_dir_url(__FILE__) . 'ginkgo-recursive-pair.js',
         array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components'),
         null,
         true
@@ -44,19 +29,30 @@ function ginkgo_enqueue_editor_assets() {
 }
 add_action('enqueue_block_editor_assets', 'ginkgo_enqueue_editor_assets');
 
-// Extend block attributes for optional branch metadata
-function ginkgo_register_block_variants() {
-    wp_add_inline_script('ginkgo-editor', 'window.ginkgoBranchSupport = true;', 'before');
-}
-add_action('init', 'ginkgo_register_block_variants');
-
-// Register BranchPair block
+// Register recursive block types
 add_action('init', function () {
     if (!function_exists('register_block_type')) return;
 
     register_block_type('ginkgo/branch-pair', array(
-        'editor_script' => 'ginkgo-pair-block',
+        'editor_script' => 'ginkgo-recursive-pair',
         'render_callback' => null,
         'supports' => array('html' => false),
     ));
+
+    register_block_type('ginkgo/branch-main', array(
+        'title' => 'Main Line',
+        'category' => 'layout',
+        'parent' => ['ginkgo/branch-pair'],
+        'supports' => array('html' => false),
+        'editor_script' => 'ginkgo-recursive-pair'
+    ));
+
+    register_block_type('ginkgo/branch-side', array(
+        'title' => 'Branch Line',
+        'category' => 'layout',
+        'parent' => ['ginkgo/branch-pair'],
+        'supports' => array('html' => false),
+        'editor_script' => 'ginkgo-recursive-pair'
+    ));
 });
+
