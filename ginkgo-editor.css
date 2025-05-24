@@ -1,6 +1,27 @@
 .wp-block-ginkgo-branch-block {
-    background: #f9f9f9;
+    display: block;
     margin: 1em 0;
-    padding: 1em;
-    border-left: 4px solid #ddd;
+    border-left: 4px solid #aaa;
+    padding-left: 1em;
+    background-color: #f9f9f9;
+}
+
+/* Branch-Pair Layout */
+.ginkgo-pair-block {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.ginkgo-pair-block > .ginkgo-main,
+.ginkgo-pair-block > .ginkgo-branch {
+    flex: 1;
+    min-width: 0;
+}
+
+.ginkgo-branch {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    background: #f8f8f8;
 }

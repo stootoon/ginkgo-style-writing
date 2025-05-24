@@ -21,12 +21,8 @@
         },
         edit: (props) => {
             const { attributes, setAttributes, clientId } = props;
-
-            // get list of all blocks
             const siblingBlocks = useSelect(select => select('core/block-editor').getBlocks(), []);
             const index = siblingBlocks.findIndex(block => block.clientId === clientId);
-
-            // store parent id once
             if (!attributes.parentId && index > 0) {
                 const parentBlock = siblingBlocks[index - 1];
                 if (parentBlock) {
